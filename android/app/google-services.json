@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "490918019409",
+    "firebase_url": "https://unitedpalestine-abacd.firebaseio.com",
+    "project_id": "unitedpalestine-abacd",
+    "storage_bucket": "unitedpalestine-abacd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490918019409:android:d2a07e1b59ac4b8f72d370",
+        "android_client_info": {
+          "package_name": "com.example.united_palestine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490918019409-lkqpffv947lhpand9i8cq2kh4654rf8n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqT8M2_XBwCn3qUFECQE2ytMgtCM9n2Nc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490918019409-lkqpffv947lhpand9i8cq2kh4654rf8n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
