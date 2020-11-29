@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/signup/signup_screen.dart';
 import 'package:united_palestine/view/updates/updates_screen.dart';
+import 'package:united_palestine/utils/AnimatedPageRoute.dart';
 
 class SplashScreen extends StatelessWidget {
   Widget buildFAB(BuildContext context) {

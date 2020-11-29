@@ -6,6 +6,7 @@ import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/updates/updates_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:united_palestine/widgets/CustomToast.dart';
+import 'package:united_palestine/utils/AnimatedPageRoute.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -322,7 +323,7 @@ class _SignupScreenState extends State<SignupScreen> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('loggedIn', true);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Updatescreen()));
+            context, AnimatedPageRoute(widget: Updatescreen()));
       } else {
         setState(() {
           isLoggingIn = false;

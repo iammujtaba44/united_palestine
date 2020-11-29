@@ -5,6 +5,7 @@ import 'package:united_palestine/view/signup/signup_screen.dart';
 import 'package:united_palestine/view/updates/updates_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:united_palestine/widgets/CustomToast.dart';
+import 'package:united_palestine/utils/AnimatedPageRoute.dart';
 
 class SigninScreen extends StatefulWidget {
   @override
@@ -65,13 +66,13 @@ class _SigninScreenState extends State<SigninScreen> {
         TextButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (ctx) => SignupScreen()));
+                  context, AnimatedPageRoute(widget: SignupScreen()));
             },
             child: Text("New here? Sign up")),
         TextButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (ctx) => ForgetPasswordScreen()));
+            Navigator.push(
+                context, AnimatedPageRoute(widget: ForgetPasswordScreen()));
           },
           child:
               Text("Forgot Password?", style: TextStyle(color: Colors.black)),
@@ -210,7 +211,7 @@ class _SigninScreenState extends State<SigninScreen> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('loggedIn', true);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Updatescreen()));
+            context, AnimatedPageRoute(widget: Updatescreen()));
       } else {
         setState(() {
           isLoggingIn = false;
