@@ -7,6 +7,8 @@ import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/drawer_screens/accounstSettings.dart';
 import 'package:united_palestine/view/drawer_screens/profile.dart';
 import 'package:united_palestine/view/drawer_screens/wallet.dart';
+import 'package:united_palestine/utils/AnimatedPageRoute.dart';
+
 FirebaseAuth _auth = FirebaseAuth.instance;
 
 Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
@@ -75,9 +77,7 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (Context) => IdCardScreen()));
+                            context, AnimatedPageRoute(widget: IdCardScreen()));
                       },
                       child: Icon(
                         Icons.contact_mail_outlined,
@@ -108,18 +108,18 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                           margin: EdgeInsets.only(left: 15),
                           child: InkWell(
                               child: Text(
-                                  'Profile',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: ProjectTheme.projectPrimaryColor,
-                                  ),
+                                'Profile',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ProjectTheme.projectPrimaryColor,
                                 ),
+                              ),
                               onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (Context) => ProfileScreen()));
-                          })
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (Context) => ProfileScreen()));
+                              })
                           //
                           ),
                     ],
@@ -141,22 +141,21 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                         color: ProjectTheme.projectPrimaryColor,
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 15),
-                        child: InkWell(
-                            child: Text(
-                              'Wallet',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: ProjectTheme.projectPrimaryColor,
+                          margin: EdgeInsets.only(left: 15),
+                          child: InkWell(
+                              child: Text(
+                                'Wallet',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ProjectTheme.projectPrimaryColor,
+                                ),
                               ),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (Context) => WalletScreen()));
-                            })
-                      ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (Context) => WalletScreen()));
+                              })),
                     ],
                   ),
                 ),
