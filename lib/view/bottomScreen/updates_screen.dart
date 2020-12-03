@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:united_palestine/project_theme.dart';
 import 'package:united_palestine/view/signin/signin.dart';
-import 'package:united_palestine/view/updates/drawer.dart';
+import 'file:///D:/Projects/united_palestine1/lib/view/drawer_screens/drawer.dart';
 
 class Updatescreen extends StatefulWidget {
   @override
@@ -19,17 +19,18 @@ class _UpdatescreenState extends State<Updatescreen> {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
     return Scaffold(
-        drawer: buildCustomDrawer(_height, _width, context),
-        appBar: AppBar(
-          title: Center(child: Text('UPDATES')),
-          backgroundColor: ProjectTheme.projectPrimaryColor,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {},
-            )
-          ],
-        ),
+        // drawer: buildCustomDrawer(_height, _width, context),
+        // appBar: AppBar(
+        //   toolbarHeight: _height * 0.08,
+        //   title: Center(child: Text('UPDATES')),
+        //   backgroundColor: ProjectTheme.projectPrimaryColor,
+        //   actions: [
+        //     IconButton(
+        //       icon: Icon(Icons.notifications),
+        //       onPressed: () {},
+        //     )
+        //   ],
+        // ),
         body: Padding(
           padding: const EdgeInsets.only(
             top: 5,
@@ -206,41 +207,6 @@ class _UpdatescreenState extends State<Updatescreen> {
 
         //bottom Navigation Bar
 
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: ProjectTheme.projectPrimaryColor,
-          selectedLabelStyle: TextStyle(
-            fontSize: 14,
-          ),
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.update, color: Colors.white),
-              label: 'Updates',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.star_half,
-                color: Colors.white,
-              ),
-              label: 'U.P GOV.',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.circle, color: Colors.white),
-              label: 'Network',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.message, color: Colors.white),
-              label: 'Community',
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-        ));
+        );
   }
 }

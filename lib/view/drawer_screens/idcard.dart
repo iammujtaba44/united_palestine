@@ -11,6 +11,7 @@ class IdCardScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: _height * 0.08,
         title: Text('ID Card'),
         backgroundColor: ProjectTheme.projectPrimaryColor,
         centerTitle: true,

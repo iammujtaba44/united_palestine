@@ -12,8 +12,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    double _height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: _height * 0.08,
         title: Text('Profile'),
         backgroundColor: ProjectTheme.projectPrimaryColor,
         centerTitle: true,
@@ -83,6 +86,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 10.0,
                               ),
                               BuildCards('Mobile Number:', '+962 79 5822348'),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              BuildCards('Profile Picture:', 'Profilepic.jpg'),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              BuildCards('Passport Pictue:', 'Upload'),
                             ],
                           )
                         ],

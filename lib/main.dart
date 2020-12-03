@@ -4,7 +4,8 @@ import 'package:united_palestine/view/forgetpassword/forgetpassword.dart';
 import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/splash/splash_screen.dart';
 import 'package:united_palestine/view/signup/signup_screen.dart';
-import 'package:united_palestine/view/updates/updates_screen.dart';
+import 'file:///D:/Projects/united_palestine1/lib/view/bottomScreen/updates_screen.dart';
+import 'view/bottomScreen/bottomNavigationScreens.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

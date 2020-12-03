@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:united_palestine/project_theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:united_palestine/view/signin/signin.dart';
+
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AccountsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: _height * 0.08,
         title: Text('Account Setting'),
         backgroundColor: ProjectTheme.projectPrimaryColor,
         centerTitle: true,
@@ -47,7 +54,13 @@ class AccountsScreen extends StatelessWidget {
                     color: Colors.white, fontWeight: FontWeight.w700),
               ),
               color: Colors.red[900],
-              onPressed: () {},
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool('loggedIn', false);
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (ctx) => SigninScreen()));
+                  _auth.signOut();
+                },
               padding: const EdgeInsets.all(10),
               shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(50)),

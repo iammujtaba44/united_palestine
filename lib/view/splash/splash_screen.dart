@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:united_palestine/view/bottomScreen/bottomNavigationScreens.dart';
 import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/signup/signup_screen.dart';
-import 'package:united_palestine/view/updates/updates_screen.dart';
+import 'file:///D:/Projects/united_palestine1/lib/view/bottomScreen/updates_screen.dart';
 import 'package:united_palestine/utils/AnimatedPageRoute.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class SplashScreen extends StatelessWidget {
       if (prefsIsLogin != null) {
         if (prefsIsLogin) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (ctx) => Updatescreen()));
+              context, MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
         } else {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (ctx) => SigninScreen()));

@@ -4,8 +4,11 @@ import 'package:united_palestine/project_theme.dart';
 class WalletScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    double _height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: _height * 0.08,
         title: Text('Profile'),
         backgroundColor: ProjectTheme.projectPrimaryColor,
         centerTitle: true,

@@ -77,7 +77,7 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context, AnimatedPageRoute(widget: IdCardScreen()));
+                            context, MaterialPageRoute(builder: (ctx) => IdCardScreen()));
                       },
                       child: Icon(
                         Icons.contact_mail_outlined,
@@ -116,7 +116,7 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                               ),
                               onTap: () {
                                 Navigator.push(
-                                    context, AnimatedPageRoute(widget: ProfileScreen()));
+                                    context, MaterialPageRoute(builder: (ctx) => ProfileScreen()));
                               })
                           //
                           ),
@@ -150,7 +150,7 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                               ),
                               onTap: () {
                                 Navigator.push(
-                                    context, AnimatedPageRoute(widget: WalletScreen()));
+                                    context, MaterialPageRoute(builder: (ctx) => WalletScreen()));
                               })),
                     ],
                   ),
@@ -259,7 +259,7 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
-                                context, AnimatedPageRoute(widget: AccountsScreen()));
+                                context, MaterialPageRoute(builder: (ctx) => AccountsScreen()));
                           },
                           child: Text(
                             'Account Settings',
@@ -283,8 +283,8 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                   onTap: () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setBool('loggedIn', false);
-                    Navigator.pushReplacement(
-                        context, AnimatedPageRoute(widget: SigninScreen()));
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (ctx) => SigninScreen()));
                     _auth.signOut();
                   },
                   child: Container(
