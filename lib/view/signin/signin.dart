@@ -211,9 +211,11 @@ class _SigninScreenState extends State<SigninScreen> {
           .user;
 
       if (user != null) {
+
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('loggedIn', true);
         setState(() {
+          Constants.user = user;
           Constants.userId = user.uid;
         });
         Navigator.pushReplacement(context,

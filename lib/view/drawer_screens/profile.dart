@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
                 child: StreamBuilder(
                   stream: database
-                      .userStream, //user.doc(Constants.userId).snapshots(),
+                      .userStream,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
@@ -232,6 +232,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget getPopulaorContainer({UserModel user}) {
+
+    final TextEditingController _firstName = TextEditingController();
+    final TextEditingController _lastName = TextEditingController();
+    final TextEditingController _bdate = TextEditingController();
+    final TextEditingController _residence = TextEditingController();
+    final TextEditingController _mobile = TextEditingController();
+    final TextEditingController _profilePic = TextEditingController();
+    final TextEditingController _passportPic = TextEditingController();
+    final TextEditingController _gender = TextEditingController();
+
+
     return Container(
       decoration: BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(
@@ -268,70 +279,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Column(
             children: [
-              InkWell(
-                  onTap: () {
-                    var dater = TextEditingController();
-                    return Alert(
-                        context: context,
-                        title: "UPDATE",
-                        content: Column(
-                          children: <Widget>[
-                            TextField(
-                              controller: dater,
-                            ),
-                          ],
-                        ),
-                        buttons: [
-                          DialogButton(
-                            onPressed: () async {
-                              userdata
-                                  .doc(Constants.userId)
-                                  .update({'firstName': dater.text.trim()});
-
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Update",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          )
-                        ]).show();
-                  },
-                  child: BuildCards('First Name:', user.firstName)),
-              SizedBox(
-                height: 10.0,
-              ),
-              BuildCards('Last Name:', user.lastName),
-              SizedBox(
-                height: 10.0,
-              ),
-              BuildCards('Date of Birth:', user.bdate),
-              SizedBox(
-                height: 10.0,
-              ),
-              BuildCards('Gender:', 'Male'),
-              SizedBox(
-                height: 10.0,
-              ),
-              BuildCards('City of Residence:', user.residence),
-              SizedBox(
-                height: 10.0,
-              ),
-              BuildCards('Mobile Number:', user.mobile),
-              SizedBox(
-                height: 10.0,
-              ),
-              BuildCards('Profile Picture:', user.profilePic),
-              SizedBox(
-                height: 10.0,
-              ),
-              BuildCards('Passport Pictue:', user.passportPic),
+              BuildBasicInfoData(user, 'firstName', 'First Name:', _firstName, user.firstName),
+              BuildBasicInfoData(user, 'lastName', 'Last Name:', _lastName, user.lastName),
+              BuildBasicInfoData(user, 'bdate', 'Date of Birth:', _bdate, user.bdate),
+              BuildBasicInfoData(user, 'gender', 'Gender', _gender, user.gender),
+              BuildBasicInfoData(user, 'residence', 'City of Residence', _residence, user.residence),
+              BuildBasicInfoData(user, 'mobile', 'Mobile Number:', _mobile, user.mobile),
+              BuildBasicInfoData(user, 'profilePic', 'Profile Picture:', _profilePic, user.profilePic),
+              BuildBasicInfoData(user, 'passportPic', 'Passport Picture:', _passportPic, user.passportPic),
             ],
           )
         ],
       ),
     );
+  }
+
+  Widget BuildBasicInfoData(UserModel user, String fieldName,String fieldTitle, TextEditingController dater,var userModel){
+    return Column(
+      children: [
+        InkWell(
+            onTap: () {
+              return Alert(
+                  context: context,
+                  title: "UPDATE",
+                  content: Column(
+                    children: <Widget>[
+                      TextField(
+                        controller: dater,
+                      ),
+                    ],
+                  ),
+                  buttons: [
+                    DialogButton(
+                      onPressed: () async {
+                        userdata
+                            .doc(Constants.userId)
+                            .update({fieldName: dater.text.trim()});
+
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "Update",
+                        style:
+                        TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    )
+                  ]).show();
+            },
+            child: BuildCards(fieldTitle, userModel)),
+        SizedBox(
+          height: 10.0,
+        ),
+      ],
+    );
+
   }
 
   Widget BuildCards(String title, String description) {

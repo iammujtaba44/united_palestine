@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:united_palestine/services/Constants.dart';
 import 'package:united_palestine/services/database.dart';
 
 class AuthServices {
@@ -26,8 +27,8 @@ class AuthServices {
           firstname: firstname,
           lastname: lastname,
           bdate: bdate);
-
-      //  Constants.isLoading = false;
+      Constants.user = user;
+    Constants.userId = user.uid;
       return user;
     } catch (e) {
       //Constants.isLoading = false;

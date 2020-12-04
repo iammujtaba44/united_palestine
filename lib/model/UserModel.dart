@@ -9,6 +9,7 @@ class UserModel {
     this.password,
     this.profilePic,
     this.residence,
+    this.gender
   });
 
   String bdate;
@@ -20,4 +21,5 @@ class UserModel {
   String password;
   String profilePic;
   String residence;
+  String gender;
 }
