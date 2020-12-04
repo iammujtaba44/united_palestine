@@ -4,7 +4,7 @@ import 'package:united_palestine/view/forgetpassword/forgetpassword.dart';
 import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/splash/splash_screen.dart';
 import 'package:united_palestine/view/signup/signup_screen.dart';
-import 'file:///D:/Projects/united_palestine1/lib/view/bottomScreen/updates_screen.dart';
+
 import 'view/bottomScreen/bottomNavigationScreens.dart';
 
 Future<void> main() async {
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashScreen(),);
+      home: SplashScreen(),
+    );
   }
 }

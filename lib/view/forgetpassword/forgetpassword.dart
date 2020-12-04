@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:united_palestine/main.dart';
-import 'file:///D:/Projects/united_palestine1/lib/view/bottomScreen/updates_screen.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   FirebaseAuth _auth = FirebaseAuth.instance;

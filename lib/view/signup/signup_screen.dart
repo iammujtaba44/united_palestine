@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:united_palestine/project_theme.dart';
+import 'package:united_palestine/services/auth.dart';
+import 'package:united_palestine/utils/Helper.dart';
 import 'package:united_palestine/view/bottomScreen/bottomNavigationScreens.dart';
 import 'package:united_palestine/view/signin/signin.dart';
-import 'file:///D:/Projects/united_palestine1/lib/view/bottomScreen/updates_screen.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:united_palestine/widgets/CustomToast.dart';
 import 'package:united_palestine/utils/AnimatedPageRoute.dart';
@@ -16,6 +18,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   DateTime _dateTime;
+  AuthServices _authenticate = AuthServices();
 
   Widget buildBackgroundImage(BuildContext context) {
     var _screenHeight = MediaQuery.of(context).size.height;
@@ -70,6 +73,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _displayName = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _CpasswordController = TextEditingController();
+  final TextEditingController _FnameController = TextEditingController();
+  final TextEditingController _LnameController = TextEditingController();
   bool isLoggingIn = false;
 
   bool _isSuccess;
@@ -113,130 +119,68 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Center(
                               child: Form(
                             key: _formKey,
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.zero,
-                                            boxShadow: [
-                                              // BoxShadow(color: Colors.white),
-                                            ]),
-                                        child: TextFormField(
-                                          controller: _emailController,
-                                          //key: _formKey,
-                                          validator: (String value) {
-                                            if (value.isEmpty) {
-                                              return 'Please enter some text';
-                                            }
-                                            return null;
-                                          },
-                                          decoration: InputDecoration(
-                                              border: UnderlineInputBorder(
-                                                  borderSide: new BorderSide(
-                                                      color: Colors.red[900])),
-                                              hintText: 'Email Address',
-                                              hintStyle: TextStyle(
-                                                  color: Colors.red[900])),
-                                          style: TextStyle(
-                                            fontStyle: FontStyle.normal,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.zero,
+                                              boxShadow: [
+                                                // BoxShadow(color: Colors.white),
+                                              ]),
+                                          child: TextFormField(
+                                            controller: _emailController,
+                                            //key: _formKey,
+                                            validator: (String value) {
+                                              if (value.isEmpty) {
+                                                return 'Please enter some text';
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                                border: UnderlineInputBorder(
+                                                    borderSide: new BorderSide(
+                                                        color:
+                                                            Colors.red[900])),
+                                                hintText: 'Email Address',
+                                                hintStyle: TextStyle(
+                                                    color: Colors.red[900])),
+                                            style: TextStyle(
+                                              fontStyle: FontStyle.normal,
+                                            ),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.zero,
+                                          boxShadow: [
+                                            //BoxShadow(color: Colors.white),
+                                          ]),
+                                      child: TextFormField(
+                                        controller: _FnameController,
+                                        validator: (String value) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                            border: UnderlineInputBorder(),
+                                            hintText: "First Name",
+                                            hintStyle: TextStyle(
+                                                color: Colors.red[900])),
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.normal),
                                       ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.zero,
-                                        boxShadow: [
-                                          //BoxShadow(color: Colors.white),
-                                        ]),
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                          border: UnderlineInputBorder(),
-                                          hintText: "First Name",
-                                          hintStyle: TextStyle(
-                                              color: Colors.red[900])),
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.normal),
                                     ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.zero,
-                                        boxShadow: [
-                                          // BoxShadow(color: Colors.white),
-                                        ]),
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                          border: UnderlineInputBorder(),
-                                          hintText:
-                                              "Last Name                                       \*"),
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.normal),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.zero,
-                                        boxShadow: [
-                                          // BoxShadow(color: Colors.white),
-                                        ]),
-                                    child: TextFormField(
-                                      controller: _passwordController,
-                                      validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return 'Please enter some text';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                          border: UnderlineInputBorder(),
-                                          hintText:
-                                              "Password                                         \*"),
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.normal),
-                                      obscureText: true,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.zero,
-                                        boxShadow: [
-                                          // BoxShadow(color: Colors.white),
-                                        ]),
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                          border: UnderlineInputBorder(),
-                                          hintText:
-                                              "Confirm Password                          \*"),
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.normal),
-                                      obscureText: true,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      print('Date picker function clicked');
-                                      showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2000),
-                                              lastDate: DateTime(2021))
-                                          .then((value) {
-                                        setState(() {
-                                          _dateTime = value;
-                                        });
-                                      });
-                                    },
-                                    child: Container(
+                                    Container(
                                       margin: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.zero,
@@ -244,62 +188,149 @@ class _SignupScreenState extends State<SignupScreen> {
                                             // BoxShadow(color: Colors.white),
                                           ]),
                                       child: TextFormField(
-                                        enabled: false,
+                                        controller: _LnameController,
+                                        validator: (String value) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
                                         decoration: InputDecoration(
                                             border: UnderlineInputBorder(),
-                                            hintText: _dateTime
-                                                    ?.toString()
-                                                    ?.substring(0, 10) ??
-                                                "Date of Birth",
-                                            suffixIcon: Icon(
-                                              Icons.arrow_drop_down,
-                                              color: ProjectTheme
-                                                  .projectPrimaryColor,
-                                              size: 30,
-                                            )),
+                                            hintText:
+                                                "Last Name                                       \*"),
                                         style: TextStyle(
                                             fontStyle: FontStyle.normal),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: 250,
-                                    child: FlatButton(
-                                      // onPressed: () {
-
-                                      //  // Navigator.push(context, MaterialPageRoute(builder:(ctx)=> SigninScreen()));
-                                      // },
-                                      color: isLoggingIn
-                                          ? Colors.red[400]
-                                          : Colors.red[900],
-                                      textColor: Colors.white,
-                                      padding: const EdgeInsets.all(10),
-                                      shape: new RoundedRectangleBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(50)),
-                                      child: !isLoggingIn
-                                          ? const Text('Sign Up',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(fontSize: 20))
-                                          : const Text('Signing Up..',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(fontSize: 20)),
-                                      onPressed: () async {
-                                        if (_formKey.currentState.validate()) {
-                                          setState(() {
-                                            isLoggingIn = true;
-                                          });
-                                          if (isLoggingIn) {
-                                            _registerAccount(context);
+                                    Container(
+                                      margin: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.zero,
+                                          boxShadow: [
+                                            // BoxShadow(color: Colors.white),
+                                          ]),
+                                      child: TextFormField(
+                                        controller: _passwordController,
+                                        validator: (String value) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter some text';
                                           }
-                                        }
-                                        //      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> Updatescreen() ));
-
-                                        // _registerAccount();
-                                      },
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                            border: UnderlineInputBorder(),
+                                            hintText:
+                                                "Password                                         \*"),
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.normal),
+                                        obscureText: true,
+                                      ),
                                     ),
-                                  ),
-                                ]),
+                                    Container(
+                                      margin: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.zero,
+                                          boxShadow: [
+                                            // BoxShadow(color: Colors.white),
+                                          ]),
+                                      child: TextFormField(
+                                        validator: (String value) {
+                                          if (value.isEmpty) {
+                                            return 'Please enter some text';
+                                          }
+                                          return null;
+                                        },
+                                        controller: _CpasswordController,
+                                        decoration: InputDecoration(
+                                            border: UnderlineInputBorder(),
+                                            hintText:
+                                                "Confirm Password                          \*"),
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.normal),
+                                        obscureText: true,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        print('Date picker function clicked');
+                                        showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(2000),
+                                                lastDate: DateTime(2021))
+                                            .then((value) {
+                                          setState(() {
+                                            _dateTime = value;
+                                          });
+                                        });
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.zero,
+                                            boxShadow: [
+                                              // BoxShadow(color: Colors.white),
+                                            ]),
+                                        child: TextFormField(
+                                          enabled: false,
+                                          decoration: InputDecoration(
+                                              border: UnderlineInputBorder(),
+                                              hintText: _dateTime
+                                                      ?.toString()
+                                                      ?.substring(0, 10) ??
+                                                  "Date of Birth",
+                                              suffixIcon: Icon(
+                                                Icons.arrow_drop_down,
+                                                color: ProjectTheme
+                                                    .projectPrimaryColor,
+                                                size: 30,
+                                              )),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 250,
+                                      child: FlatButton(
+                                        // onPressed: () {
+
+                                        //  // Navigator.push(context, MaterialPageRoute(builder:(ctx)=> SigninScreen()));
+                                        // },
+                                        color: isLoggingIn
+                                            ? Colors.red[400]
+                                            : Colors.red[900],
+                                        textColor: Colors.white,
+                                        padding: const EdgeInsets.all(10),
+                                        shape: new RoundedRectangleBorder(
+                                            borderRadius:
+                                                new BorderRadius.circular(50)),
+                                        child: !isLoggingIn
+                                            ? const Text('Sign Up',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(fontSize: 20))
+                                            : const Text('Signing Up..',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(fontSize: 20)),
+                                        onPressed: () async {
+                                          _register(context);
+                                          // if (_formKey.currentState.validate()) {
+                                          //   setState(() {
+                                          //     isLoggingIn = true;
+                                          //   });
+                                          //   if (isLoggingIn) {
+                                          //     _registerAccount(context);
+                                          //   }
+                                          // }
+                                          //      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> Updatescreen() ));
+
+                                          // _registerAccount();
+                                        },
+                                      ),
+                                    ),
+                                  ]),
+                            ),
                           )),
                         ),
                       ),
@@ -312,33 +343,64 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  void _registerAccount(BuildContext context) async {
-    try {
-      final User user = (await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      ))
-          .user;
-
-      if (user != null) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('loggedIn', true);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
-      } else {
-        setState(() {
-          isLoggingIn = false;
-        });
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-          msg: e.toString(),
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.black);
+  void _register(BuildContext context) async {
+    if (_formKey.currentState.validate()) {
       setState(() {
-        isLoggingIn = false;
+        isLoggingIn = true;
       });
+      if (isLoggingIn) {
+        dynamic result = await _authenticate.registerWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+            firstname: _FnameController.text.trim(),
+            lastname: _LnameController.text.trim(),
+            bdate: Helper.getDate(_dateTime));
+        if (result == null) {
+          print('Sorry couldn\'t register');
+          setState(() {
+            isLoggingIn = false;
+          });
+        } else if (result != null) {
+          _emailController.clear();
+          _passwordController..clear();
+          _FnameController..clear();
+          _LnameController.clear();
+          _dateTime = null;
+
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
+        }
+      }
     }
   }
+
+  // void _registerAccount(BuildContext context) async {
+  //   try {
+  //     final User user = (await _auth.createUserWithEmailAndPassword(
+  //       email: _emailController.text.trim(),
+  //       password: _passwordController.text.trim(),
+  //     ))
+  //         .user;
+  //
+  //     if (user != null) {
+  //       final prefs = await SharedPreferences.getInstance();
+  //       await prefs.setBool('loggedIn', true);
+  //       Navigator.pushReplacement(context,
+  //           MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
+  //     } else {
+  //       setState(() {
+  //         isLoggingIn = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     Fluttertoast.showToast(
+  //         msg: e.toString(),
+  //         toastLength: Toast.LENGTH_LONG,
+  //         gravity: ToastGravity.CENTER,
+  //         backgroundColor: Colors.black);
+  //     setState(() {
+  //       isLoggingIn = false;
+  //     });
+  //   }
+  // }
 }

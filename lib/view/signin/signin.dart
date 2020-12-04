@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:united_palestine/services/Constants.dart';
 import 'package:united_palestine/view/bottomScreen/bottomNavigationScreens.dart';
 import 'package:united_palestine/view/forgetpassword/forgetpassword.dart';
 import 'package:united_palestine/view/signup/signup_screen.dart';
-import 'file:///D:/Projects/united_palestine1/lib/view/bottomScreen/updates_screen.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:united_palestine/widgets/CustomToast.dart';
 import 'package:united_palestine/utils/AnimatedPageRoute.dart';
@@ -72,8 +73,8 @@ class _SigninScreenState extends State<SigninScreen> {
             child: Text("New here? Sign up")),
         TextButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (ctx) => ForgetPasswordScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (ctx) => ForgetPasswordScreen()));
           },
           child:
               Text("Forgot Password?", style: TextStyle(color: Colors.black)),
@@ -208,11 +209,15 @@ class _SigninScreenState extends State<SigninScreen> {
         password: _passwordController.text.trim(),
       ))
           .user;
+
       if (user != null) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('loggedIn', true);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
+        setState(() {
+          Constants.userId = user.uid;
+        });
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
       } else {
         setState(() {
           isLoggingIn = false;
