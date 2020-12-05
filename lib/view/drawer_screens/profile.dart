@@ -17,11 +17,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isExpanded = false;
   final CollectionReference userdata =
       FirebaseFirestore.instance.collection('user');
+  bool hasData1 = false;
 
   DatabaseService database = DatabaseService(uId: Constants.userId);
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: _height * 0.08,
@@ -32,202 +34,141 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                padding:  EdgeInsets.only(top: 30, left: 20, right: 20),
                 child: StreamBuilder(
                   stream: database
                       .userStream,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
+                      return Padding(
+                        padding:  EdgeInsets.only(top: _height * 0.4, left: _width * 0.4, right: 20),
+                          child: CircularProgressIndicator());
                     }
-                    return getPopulaorContainer(user: snapshot.data[0]);
-                  },
-                ),
-              ),
-              Column(
-                children: List.generate(
-                    titles.length,
-                    (index) => Padding(
-                          padding: index == 0
-                              ? const EdgeInsets.only(
-                                  left: 20, top: 15.0, right: 20)
-                              : const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 1,
-                                        blurRadius: 1,
-                                        offset: Offset(1, 3),
-                                      )
-                                    ]),
-                                child: ExpansionTile(
-                                  trailing: isExpanded
-                                      ? Icon(
+                   List<UserModel> use = snapshot.data;
+                    int index = 0;
+                    for(int i = 0; i<use.length; i++){
+                      if(Constants.user.email == use[i].email)
+                      {
+                        index = i;
+                        break;
+                      }
+                    }
+
+                    return Column(
+                      children: [getPopulaorContainer(user: snapshot.data[index]),
+                        Column(
+                          children: List.generate(
+                              titles.length,
+                                  (index) => Padding(
+                                padding: index == 0
+                                    ? const EdgeInsets.only(
+                                     top: 15.0,)
+                                    : const EdgeInsets.only(top: 0),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 1,
+                                              blurRadius: 1,
+                                              offset: Offset(1, 3),
+                                            )
+                                          ]),
+                                      child: ExpansionTile(
+                                        trailing: isExpanded
+                                            ? Icon(
                                           Icons.keyboard_arrow_down,
                                           color:
-                                              ProjectTheme.projectPrimaryColor,
+                                          ProjectTheme.projectPrimaryColor,
                                         )
-                                      : Icon(
+                                            : Icon(
                                           Icons.keyboard_arrow_right_outlined,
                                           color:
-                                              ProjectTheme.projectPrimaryColor,
+                                          ProjectTheme.projectPrimaryColor,
                                         ),
-                                  onExpansionChanged: (value) {
-                                    setState(() {
-                                      if (isExpanded)
-                                        isExpanded = false;
-                                      else
-                                        isExpanded = true;
-                                    });
-                                  },
-                                  childrenPadding:
-                                      EdgeInsets.only(top: 10, bottom: 10),
-                                  title: Text(
-                                    titles[index],
-                                    style: TextStyle(
-                                        color: ProjectTheme.projectPrimaryColor,
-                                        fontSize: 18.5),
-                                  ),
-                                  children: [
-                                    Column(
-                                      children: [
-                                        BuildCards('Name:', 'Tamer'),
-                                        SizedBox(
-                                          height: 10.0,
+                                        onExpansionChanged: (value) {
+                                          setState(() {
+                                            if (isExpanded)
+                                              isExpanded = false;
+                                            else
+                                              isExpanded = true;
+                                          });
+                                        },
+                                        childrenPadding:
+                                        EdgeInsets.only(top: 10, bottom: 10),
+                                        title: Text(
+                                          titles[index],
+                                          style: TextStyle(
+                                              color: ProjectTheme.projectPrimaryColor,
+                                              fontSize: 18.5),
                                         ),
-                                        BuildCards('Last Name:', 'Atia'),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        BuildCards(
-                                            'Date of Birth:', '07/09/1980'),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        BuildCards('Gender:', 'Male'),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        BuildCards('City of Residence:',
-                                            'Amman, Jordon'),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        BuildCards('Mobile Number:',
-                                            '+962 79 5822348'),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        BuildCards('Profile Picture:',
-                                            'Profilepic.jpg'),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        BuildCards(
-                                            'Passport Pictue:', 'Upload'),
-                                      ],
+                                        children: [
+                                          Column(
+                                            children: [
+                                              BuildCards('Name:', 'Tamer'),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              BuildCards('Last Name:', 'Atia'),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              BuildCards(
+                                                  'Date of Birth:', '07/09/1980'),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              BuildCards('Gender:', 'Male'),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              BuildCards('City of Residence:',
+                                                  'Amman, Jordon'),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              BuildCards('Mobile Number:',
+                                                  '+962 79 5822348'),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              BuildCards('Profile Picture:',
+                                                  'Profilepic.jpg'),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              BuildCards(
+                                                  'Passport Pictue:', 'Upload'),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
                                     )
                                   ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              )
-                            ],
-                          ),
-                        )),
-              )
+                              )),
+                        )
+                      ],
+                    );//getPopulaorContainer(user: snapshot.data[index]);
+                  },
+                ),
+              ),
+
+
             ],
           ),
         )
-        // child: ListView.builder(
-        //     itemCount: titles.length,
-        //     itemBuilder: (context, index) => Column(
-        //           children: [
-        //             Container(
-        //               decoration:
-        //                   BoxDecoration(color: Colors.white, boxShadow: [
-        //                 BoxShadow(
-        //                   color: Colors.grey.withOpacity(0.2),
-        //                   spreadRadius: 1,
-        //                   blurRadius: 1,
-        //                   offset: Offset(1, 3),
-        //                 )
-        //               ]),
-        //               child: ExpansionTile(
-        //                 trailing: isExpanded
-        //                     ? Icon(
-        //                         Icons.keyboard_arrow_down,
-        //                         color: ProjectTheme.projectPrimaryColor,
-        //                       )
-        //                     : Icon(
-        //                         Icons.keyboard_arrow_right_outlined,
-        //                         color: ProjectTheme.projectPrimaryColor,
-        //                       ),
-        //                 onExpansionChanged: (value) {
-        //                   setState(() {
-        //                     if (isExpanded)
-        //                       isExpanded = false;
-        //                     else
-        //                       isExpanded = true;
-        //                   });
-        //                 },
-        //                 childrenPadding: EdgeInsets.only(top: 10, bottom: 10),
-        //                 title: Text(
-        //                   titles[index],
-        //                   style: TextStyle(
-        //                       color: ProjectTheme.projectPrimaryColor,
-        //                       fontSize: 18.5),
-        //                 ),
-        //                 children: [
-        //                   Column(
-        //                     children: [
-        //                       BuildCards('Name:', 'Tamer'),
-        //                       SizedBox(
-        //                         height: 10.0,
-        //                       ),
-        //                       BuildCards('Last Name:', 'Atia'),
-        //                       SizedBox(
-        //                         height: 10.0,
-        //                       ),
-        //                       BuildCards('Date of Birth:', '07/09/1980'),
-        //                       SizedBox(
-        //                         height: 10.0,
-        //                       ),
-        //                       BuildCards('Gender:', 'Male'),
-        //                       SizedBox(
-        //                         height: 10.0,
-        //                       ),
-        //                       BuildCards('City of Residence:', 'Amman, Jordon'),
-        //                       SizedBox(
-        //                         height: 10.0,
-        //                       ),
-        //                       BuildCards('Mobile Number:', '+962 79 5822348'),
-        //                       SizedBox(
-        //                         height: 10.0,
-        //                       ),
-        //                       BuildCards('Profile Picture:', 'Profilepic.jpg'),
-        //                       SizedBox(
-        //                         height: 10.0,
-        //                       ),
-        //                       BuildCards('Passport Pictue:', 'Upload'),
-        //                     ],
-        //                   )
-        //                 ],
-        //               ),
-        //             ),
-        //             SizedBox(
-        //               height: 10.0,
-        //             )
-        //           ],
-        //         )),
+
         );
   }
 

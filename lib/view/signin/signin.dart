@@ -212,8 +212,11 @@ class _SigninScreenState extends State<SigninScreen> {
 
       if (user != null) {
 
+
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('loggedIn', true);
+        await prefs.setString('email', _emailController.text.trim());
+        await prefs.setString('password', _passwordController.text.trim());
         setState(() {
           Constants.user = user;
           Constants.userId = user.uid;

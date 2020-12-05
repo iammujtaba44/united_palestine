@@ -25,10 +25,15 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 6, left: 6),
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 35,
-                  color: Colors.white,
+                child: InkWell(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    size: 35,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               SizedBox(
@@ -258,7 +263,8 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                         margin: EdgeInsets.only(left: 15),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(
                                 context, MaterialPageRoute(builder: (ctx) => AccountsScreen()));
                           },
                           child: Text(

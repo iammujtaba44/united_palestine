@@ -20,6 +20,8 @@ class AuthServices {
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('loggedIn', true);
+      await prefs.setString('email', email.trim());
+      await prefs.setString('password', password.trim());
       print(user.uid);
       await DatabaseService(uId: user.uid).UserData(
           email: email,

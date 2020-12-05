@@ -9,6 +9,7 @@ import 'package:united_palestine/view/signin/signin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:united_palestine/services/database.dart';
 import 'package:united_palestine/widgets/CustomToast.dart';
+import 'package:united_palestine/view/drawer_screens/AccountPassworChange.dart';
 
 
 // void _changePassword(String password) async{
@@ -51,7 +52,17 @@ class _AccountsScreenState extends State<AccountsScreen> {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          UserModel data= snapshot.data[0];
+
+          List<UserModel> use = snapshot.data;
+          int index = 0;
+          for(int i = 0; i<use.length; i++){
+            if(Constants.user.email == use[i].email)
+            {
+              index = i;
+              break;
+            }
+          }
+          UserModel data= snapshot.data[index];
           return Stack(
             children: [
               Padding(
@@ -72,46 +83,50 @@ class _AccountsScreenState extends State<AccountsScreen> {
                         ),
                         InkWell(
                               onTap: () {
-                                return Alert(
-                                    context: context,
-                                    title: "UPDATE",
-                                    content: Column(
-                                      children: <Widget>[
-                                        TextField(
-                                          controller: dater,
-                                        ),
-                                      ],
-                                    ),
-                                    buttons: [
-                                      DialogButton(
-                                        onPressed: () async {
-
-                                          Constants.user.updatePassword(dater.text.trim()).then((_) async{
-                                           await userdata
-                                                .doc(Constants.userId)
-                                                .update({'password': dater.text.trim()});
-                                         customToast(text: "Successfully changed");
-
-
-                                            final prefs = await SharedPreferences.getInstance();
-                                            await prefs.setBool('loggedIn', false);
-                                            Navigator.pop(context);
-                                            Navigator.pushReplacement(
-                                                context, MaterialPageRoute(builder: (context) => SigninScreen()));
-                                            _auth.signOut();
-
-                                          });
-
-
-                                          //_authuser
-                                        },
-                                        child: Text(
-                                          "Update",
-                                          style:
-                                          TextStyle(color: Colors.white, fontSize: 20),
-                                        ),
-                                      )
-                                    ]).show();
+                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=> AccountPasswordChange()));
+                                
+                                
+                                
+                                // return Alert(
+                                //     context: context,
+                                //     title: "UPDATE",
+                                //     content: Column(
+                                //       children: <Widget>[
+                                //         TextField(
+                                //           controller: dater,
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     buttons: [
+                                //       DialogButton(
+                                //         onPressed: () async {
+                                //
+                                //           Constants.user.updatePassword(dater.text.trim()).then((_) async{
+                                //            await userdata
+                                //                 .doc(Constants.userId)
+                                //                 .update({'password': dater.text.trim()});
+                                //          customToast(text: "Successfully changed");
+                                //
+                                //
+                                //             final prefs = await SharedPreferences.getInstance();
+                                //             await prefs.setBool('loggedIn', false);
+                                //             Navigator.pop(context);
+                                //             Navigator.pushReplacement(
+                                //                 context, MaterialPageRoute(builder: (context) => SigninScreen()));
+                                //             _auth.signOut();
+                                //
+                                //           });
+                                //
+                                //
+                                //           //_authuser
+                                //         },
+                                //         child: Text(
+                                //           "Update",
+                                //           style:
+                                //           TextStyle(color: Colors.white, fontSize: 20),
+                                //         ),
+                                //       )
+                                //     ]).show();
                               },
                               child:
                               ListTile(
@@ -175,7 +190,7 @@ class _AccountsScreenState extends State<AccountsScreen> {
                     onPressed: () async {
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.setBool('loggedIn', false);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context, MaterialPageRoute(builder: (ctx) => SigninScreen()));
                       _auth.signOut();
                     },

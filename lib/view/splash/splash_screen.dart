@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:united_palestine/services/Constants.dart';
 import 'package:united_palestine/view/bottomScreen/bottomNavigationScreens.dart';
 import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/signup/signup_screen.dart';
 
 import 'package:united_palestine/utils/AnimatedPageRoute.dart';
+import 'package:united_palestine/widgets/CustomToast.dart';
 
 class SplashScreen extends StatelessWidget {
   Widget buildFAB(BuildContext context) {
@@ -25,8 +28,9 @@ class SplashScreen extends StatelessWidget {
       final prefsIsLogin = prefs.getBool('loggedIn');
       if (prefsIsLogin != null) {
         if (prefsIsLogin) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
+          _signInWithEmailAndPassword(context);
+          // Navigator.pushReplacement(context,
+          //     MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
         } else {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (ctx) => SigninScreen()));
@@ -46,7 +50,33 @@ class SplashScreen extends StatelessWidget {
       ),
     );
   }
+  void _signInWithEmailAndPassword(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
 
+    final prefsEmail = prefs.getString('email');
+    final prefsPass = prefs.getString('password');
+    try {
+      final User user = (await _auth.signInWithEmailAndPassword(
+        email: prefsEmail.trim(),
+        password: prefsPass.trim(),
+      ))
+          .user;
+
+      if (user != null) {
+
+          Constants.user = user;
+          Constants.userId = user.uid;
+
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (ctx) => BottomNavigationScreens()));
+      }
+
+    } catch (e) {
+      customToast(text: e.toString());
+
+    }
+  }
+  FirebaseAuth _auth = FirebaseAuth.instance;
   Widget buildBackgroundImage(BuildContext context) {
     var _screenHeight = MediaQuery.of(context).size.height;
     return Container(
