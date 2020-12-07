@@ -264,7 +264,7 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                         child: InkWell(
                           onTap: () {
                             Navigator.pop(context);
-                            Navigator.pushReplacement(
+                            Navigator.push(
                                 context, MaterialPageRoute(builder: (ctx) => AccountsScreen()));
                           },
                           child: Text(
@@ -289,8 +289,7 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                   onTap: () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setBool('loggedIn', false);
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (ctx) => SigninScreen()));
+                    Navigator.pushNamedAndRemoveUntil(context, SigninScreen.routeName, (route) => false);
                     _auth.signOut();
                   },
                   child: Container(

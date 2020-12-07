@@ -48,6 +48,7 @@ flutter_icons:
   ios: true
   image_path: "assets/logo.png"
 
+
 flutter_launcher_name:
   name: "United Palestine"
 

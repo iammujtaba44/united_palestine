@@ -40,6 +40,9 @@ class _AccountsScreenState extends State<AccountsScreen> {
     final TextEditingController dater = TextEditingController();
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios),
+          onPressed: (){Navigator.pop(context);}),
         toolbarHeight: _height * 0.08,
         title: Text('Account Setting'),
         backgroundColor: ProjectTheme.projectPrimaryColor,
@@ -190,8 +193,7 @@ class _AccountsScreenState extends State<AccountsScreen> {
                     onPressed: () async {
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.setBool('loggedIn', false);
-                      Navigator.pushReplacement(
-                          context, MaterialPageRoute(builder: (ctx) => SigninScreen()));
+                     Navigator.pushNamedAndRemoveUntil(context, SigninScreen.routeName, (route) => false);
                       _auth.signOut();
                     },
                     padding: const EdgeInsets.all(10),

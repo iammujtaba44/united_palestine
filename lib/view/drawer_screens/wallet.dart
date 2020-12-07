@@ -19,7 +19,7 @@ class _WalletScreenState extends State<WalletScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: _height * 0.08,
-        title: Text('Profile'),
+        title: Text('Wallet'),
         backgroundColor: ProjectTheme.projectPrimaryColor,
         centerTitle: true,
       ),

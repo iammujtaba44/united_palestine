@@ -77,7 +77,7 @@ class _BottomNavigationScreensState extends State<BottomNavigationScreens> {
                   icon:
                   ImageIcon(
                     AssetImage(
-                      'assets/icons/1.png',
+                      'assets/1.png',
                     ),
                     size: 35,
                   ),
@@ -86,7 +86,7 @@ class _BottomNavigationScreensState extends State<BottomNavigationScreens> {
                 BottomNavigationBarItem(
                   icon: ImageIcon(
                     AssetImage(
-                      'assets/icons/2.png',
+                      'assets/2.png',
                     ),
                     size: 35,
                   ),
@@ -95,7 +95,7 @@ class _BottomNavigationScreensState extends State<BottomNavigationScreens> {
                 BottomNavigationBarItem(
                   icon: ImageIcon(
                       AssetImage(
-                        'assets/icons/3.png',
+                        'assets/3.png',
                       ),
                       size: 35),
                   label: 'Network',
@@ -103,7 +103,7 @@ class _BottomNavigationScreensState extends State<BottomNavigationScreens> {
                 BottomNavigationBarItem(
                   icon: ImageIcon(
                       AssetImage(
-                        'assets/icons/4.png',
+                        'assets/4.png',
                       ),
                       size: 35),
                   label: 'Community',

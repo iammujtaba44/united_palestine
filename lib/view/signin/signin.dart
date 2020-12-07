@@ -10,6 +10,7 @@ import 'package:united_palestine/widgets/CustomToast.dart';
 import 'package:united_palestine/utils/AnimatedPageRoute.dart';
 
 class SigninScreen extends StatefulWidget {
+  static const routeName = '/sign-in';
   @override
   _SigninScreenState createState() => _SigninScreenState();
 }
