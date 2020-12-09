@@ -27,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _selectedCounty = '';
 
   String _selectedCountyCode = '';
+  String dropdownValue = '';
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
@@ -229,9 +230,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Column(
             children: [
               BuildBasicInfoData(
-                  user: user, fieldName: 'firstName',fieldTitle: 'First Name:', dater:_firstName, userModel: user.firstName),
+                  user: user,
+                  fieldName: 'firstName',
+                  fieldTitle: 'First Name:',
+                  dater: _firstName,
+                  userModel: user.firstName),
               BuildBasicInfoData(
-                  user : user,fieldName: 'lastName',fieldTitle: 'Last Name:', dater: _lastName, userModel: user.lastName),
+                  user: user,
+                  fieldName: 'lastName',
+                  fieldTitle: 'Last Name:',
+                  dater: _lastName,
+                  userModel: user.lastName),
               Column(
                 children: [
                   GestureDetector(
@@ -310,8 +319,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               // BuildBasicInfoData(user, 'bdate', 'Date of Birth:', _bdate, user.bdate),
-              BuildBasicInfoData(
-                  user:user, fieldName:'gender', fieldTitle: 'Gender', dater: _gender,userModel: user.gender),
+              Column(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        return
+                          Alert(
+                            context: context,
+                            title: "Gender",
+                            content: Column(
+                              children: <Widget>[
+                                DropdownButton<String>(
+                                    value: dropdownValue,
+                                    items: <String>['Male', 'Female',]
+                                        .map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+
+                                    onChanged: (String newValue)
+
+                                    {print(dropdownValue);
+
+                                      setState(() {
+                                        dropdownValue = newValue;
+                                        Navigator.pop(context);
+                                        userdata
+                                            .doc(Constants.userId)
+                                            .update({'gender': '$dropdownValue'});
+
+                                      });
+                                    })
+                              ],
+                            ),
+                          ).show();
+                      },
+                      child: BuildCards('Gender:', user.gender)),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                ],
+              ),
+
+              // BuildBasicInfoData(
+              //     user:user, fieldName:'gender', fieldTitle: 'Gender', dater: _gender,userModel: user.gender),
 
               Column(
                 children: [
@@ -327,10 +380,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
-                                        width: 120, child: TextFormField(controller: _residence,decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 15),hintText: 'Enter City'),)),
+                                        width: 120,
+                                        child: TextFormField(
+                                          controller: _residence,
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.only(left: 15),
+                                              hintText: 'Enter City'),
+                                        )),
                                     Expanded(
                                       child: CountryListPick(
-                                        pickerBuilder: (context, CountryCode countryCode){
+                                        pickerBuilder:
+                                            (context, CountryCode countryCode) {
                                           return Text(countryCode.name);
                                         },
                                         theme: CountryTheme(
@@ -341,11 +402,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           showEnglishName: true,
                                         ),
                                         onChanged: (CountryCode code) {
-                                         // print(code.name);
+                                          // print(code.name);
                                           setState(() {
                                             _selectedCounty = code.name;
                                           });
-
                                         },
                                       ),
                                     ),
@@ -356,9 +416,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             buttons: [
                               DialogButton(
                                 onPressed: () async {
-
-                                  userdata.doc(Constants.userId).update(
-                                      {'residence': '${_residence.text.trim()}, ${_selectedCounty}'});
+                                  userdata.doc(Constants.userId).update({
+                                    'residence':
+                                        '${_residence.text.trim()}, ${_selectedCounty}'
+                                  });
 
                                   Navigator.pop(context);
                                 },
@@ -388,13 +449,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             content: Column(
                               children: <Widget>[
                                 Row(
-                                 // mainAxisAlignment:
-                                 // MainAxisAlignment.spaceEvenly,
+                                  // mainAxisAlignment:
+                                  // MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Expanded(
-                                      flex:1,
+                                      flex: 1,
                                       child: CountryListPick(
-                                        pickerBuilder: (context, CountryCode countryCode){
+                                        pickerBuilder:
+                                            (context, CountryCode countryCode) {
                                           return Text(countryCode.dialCode);
                                         },
                                         theme: CountryTheme(
@@ -409,16 +471,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           setState(() {
                                             _selectedCountyCode = code.dialCode;
                                           });
-
                                         },
                                       ),
                                     ),
                                     Expanded(
                                       flex: 3,
                                       child: Container(
-                                          width: 120, child: TextFormField(controller: _mobile,decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 15),hintText: 'Enter number without code'),)),
+                                          width: 120,
+                                          child: TextFormField(
+                                            controller: _mobile,
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.only(left: 15),
+                                                hintText:
+                                                    'Enter number without code'),
+                                          )),
                                     ),
-
                                   ],
                                 )
                               ],
@@ -426,9 +494,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             buttons: [
                               DialogButton(
                                 onPressed: () async {
-
-                                  userdata.doc(Constants.userId).update(
-                                      {'mobile': ' ${_selectedCountyCode} ${_mobile.text.trim()}'});
+                                  userdata.doc(Constants.userId).update({
+                                    'mobile':
+                                        ' ${_selectedCountyCode} ${_mobile.text.trim()}'
+                                  });
 
                                   Navigator.pop(context);
                                 },
@@ -448,10 +517,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               // BuildBasicInfoData(
               //     user, 'mobile', 'Mobile Number:', _mobile, user.mobile),
-              BuildBasicInfoData(user:user, fieldName:'profilePic',fieldTitle: 'Profile Picture:',
-                  dater:_profilePic,userModel: user.profilePic,onpressed: true),
-              BuildBasicInfoData(user: user, fieldName:'passportPic', fieldTitle:'Passport Picture:',
-                  dater:_passportPic,userModel: user.passportPic,onpressed: true),
+              BuildBasicInfoData(
+                  user: user,
+                  fieldName: 'profilePic',
+                  fieldTitle: 'Profile Picture:',
+                  dater: _profilePic,
+                  userModel: user.profilePic,
+                  onpressed: true),
+              BuildBasicInfoData(
+                  user: user,
+                  fieldName: 'passportPic',
+                  fieldTitle: 'Passport Picture:',
+                  dater: _passportPic,
+                  userModel: user.passportPic,
+                  onpressed: true),
             ],
           )
         ],
@@ -459,38 +538,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget BuildBasicInfoData({UserModel user, String fieldName, String fieldTitle,
-      TextEditingController dater, var userModel, bool onpressed = false}) {
+  Widget BuildBasicInfoData(
+      {UserModel user,
+      String fieldName,
+      String fieldTitle,
+      TextEditingController dater,
+      var userModel,
+      bool onpressed = false}) {
     return Column(
       children: [
         InkWell(
-            onTap: onpressed? (){} :() {
-              return Alert(
-                  context: context,
-                  title: "$fieldTitle",
-                  content: Column(
-                    children: <Widget>[
-                      TextField(
-                        controller: dater,
-                      ),
-                    ],
-                  ),
-                  buttons: [
-                    DialogButton(
-                      onPressed: () async {
-                        userdata
-                            .doc(Constants.userId)
-                            .update({fieldName: dater.text.trim()});
+            onTap: onpressed
+                ? () {}
+                : () {
+                    return Alert(
+                        context: context,
+                        title: "$fieldTitle",
+                        content: Column(
+                          children: <Widget>[
+                            TextField(
+                              controller: dater,
+                            ),
+                          ],
+                        ),
+                        buttons: [
+                          DialogButton(
+                            onPressed: () async {
+                              userdata
+                                  .doc(Constants.userId)
+                                  .update({fieldName: dater.text.trim()});
 
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        "Update",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ]).show();
-            },
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Update",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          )
+                        ]).show();
+                  },
             child: BuildCards(fieldTitle, userModel)),
         SizedBox(
           height: 10.0,
@@ -545,4 +632,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     'Personal documents',
     'Circle Extra Information',
   ];
+
+
 }
