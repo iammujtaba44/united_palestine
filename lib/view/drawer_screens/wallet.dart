@@ -16,6 +16,7 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: _height * 0.08,
@@ -33,7 +34,12 @@ class _WalletScreenState extends State<WalletScreen> {
                 stream: dataBase.walletStream,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
+                    return Padding(
+                      padding:  EdgeInsets.only(top: _height * 0.35,
+                          left: _width * 0.38,
+                          ),
+                      child: CircularProgressIndicator(),
+                    );
                   }
                   print(snapshot.data[0].totalBalance);
                   WalletModel data= snapshot.data[0];

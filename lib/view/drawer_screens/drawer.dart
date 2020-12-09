@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:united_palestine/model/UserModel.dart';
 import 'package:united_palestine/project_theme.dart';
+import 'package:united_palestine/services/Constants.dart';
+import 'package:united_palestine/services/database.dart';
 import 'package:united_palestine/view/drawer_screens/idcard.dart';
 import 'package:united_palestine/view/signin/signin.dart';
 import 'package:united_palestine/view/drawer_screens/accounstSettings.dart';
@@ -12,6 +16,12 @@ import 'package:united_palestine/utils/AnimatedPageRoute.dart';
 FirebaseAuth _auth = FirebaseAuth.instance;
 
 Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
+  final CollectionReference userdata =
+  FirebaseFirestore.instance.collection('user');
+  bool hasData1 = false;
+
+  DatabaseService database = DatabaseService(uId: Constants.userId);
+
   return Drawer(
     child: Column(
       children: [
@@ -51,13 +61,30 @@ Drawer buildCustomDrawer(double _height, double _width, BuildContext context) {
                     SizedBox(
                       width: _width / 20,
                     ),
-                    Text(
-                      'Tamer Atia',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20),
-                    ),
+                    StreamBuilder(
+  stream: database.userStream,
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) {
+      return CircularProgressIndicator();
+    }
+    List<UserModel> use = snapshot.data;
+    int index = 0;
+    for (int i = 0; i < use.length; i++) {
+      if (Constants.user.email == use[i].email) {
+        index = i;
+        break;
+      }
+    }
+    UserModel data = snapshot.data[index];
+    return Text(
+      '${data.firstName} ${data.lastName}',
+      style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontSize: 20),
+    );
+  }   ),
+
                   ],
                 ),
               ),

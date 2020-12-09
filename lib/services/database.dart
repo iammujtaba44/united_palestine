@@ -30,8 +30,8 @@ class DatabaseService {
       'password': password,
       'residence': '', //residence,
       'mobile': ',', //mobile,
-      'profilePic': '', //profilePic,
-      'passportPic': '',
+      'profilePic': 'profile.jpg', //profilePic,
+      'passportPic': 'passport.jpg',
       'gender': '', //passportPic
     });
   }

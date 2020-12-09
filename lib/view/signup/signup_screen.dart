@@ -257,7 +257,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         showDatePicker(
                                                 context: context,
                                                 initialDate: DateTime.now(),
-                                                firstDate: DateTime(2000),
+                                                firstDate: DateTime(1950),
                                                 lastDate: DateTime(2021))
                                             .then((value) {
                                           setState(() {

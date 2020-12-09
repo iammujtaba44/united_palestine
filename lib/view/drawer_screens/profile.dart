@@ -8,6 +8,7 @@ import 'package:united_palestine/project_theme.dart';
 import 'package:united_palestine/services/Constants.dart';
 import 'package:united_palestine/services/database.dart';
 import 'package:united_palestine/utils/Helper.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -22,6 +23,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool hasData1 = false;
 
   DatabaseService database = DatabaseService(uId: Constants.userId);
+
+  String _selectedCounty = '';
+
+  String _selectedCountyCode = '';
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
@@ -224,26 +229,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Column(
             children: [
               BuildBasicInfoData(
-                  user, 'firstName', 'First Name:', _firstName, user.firstName),
+                  user: user, fieldName: 'firstName',fieldTitle: 'First Name:', dater:_firstName, userModel: user.firstName),
               BuildBasicInfoData(
-                  user, 'lastName', 'Last Name:', _lastName, user.lastName),
+                  user : user,fieldName: 'lastName',fieldTitle: 'Last Name:', dater: _lastName, userModel: user.lastName),
               Column(
                 children: [
                   GestureDetector(
                       onTap: () async {
                         print('Date picker function clicked');
                         var isSelected;
-                        final DateTime picked =await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2021));
-                        if (picked != null && picked != _dateTime)
-                        {
-                          setState((){
-
+                        final DateTime picked = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1950),
+                            lastDate: DateTime(2021));
+                        if (picked != null && picked != _dateTime) {
+                          setState(() {
                             _bdate.text = picked.toString();
-                             userdata
+                            userdata
                                 .doc(Constants.userId)
                                 .update({'bdate': _bdate.text.trim()});
                           });
@@ -262,7 +265,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ]),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 0),
-                          child: Container(padding: EdgeInsets.only(left: 40,right: 10),
+                          child: Container(
+                            padding: EdgeInsets.only(left: 40, right: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -273,9 +277,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       fontSize: 15.5,
                                       fontWeight: FontWeight.w400),
                                 ),
-
-                                SizedBox(width: 140,
-                                  child: SingleChildScrollView(scrollDirection: Axis.horizontal,
+                                SizedBox(
+                                  width: 140,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
                                     child: Row(
                                       children: [
                                         Text(
@@ -284,9 +289,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               fontSize: 15.5,
                                               fontWeight: FontWeight.w400),
                                         ),
-                                        Icon(Icons.arrow_drop_down,color: ProjectTheme
-                                            .projectPrimaryColor,
-                                          size: 30,)
+                                        Icon(
+                                          Icons.arrow_drop_down,
+                                          color:
+                                              ProjectTheme.projectPrimaryColor,
+                                          size: 30,
+                                        )
                                       ],
                                     ),
                                   ),
@@ -295,8 +303,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ),
-                      )
-                      ),
+                      )),
                   SizedBox(
                     height: 10.0,
                   ),
@@ -304,15 +311,147 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               // BuildBasicInfoData(user, 'bdate', 'Date of Birth:', _bdate, user.bdate),
               BuildBasicInfoData(
-                  user, 'gender', 'Gender', _gender, user.gender),
-              BuildBasicInfoData(user, 'residence', 'City of Residence',
-                  _residence, user.residence),
-              BuildBasicInfoData(
-                  user, 'mobile', 'Mobile Number:', _mobile, user.mobile),
-              BuildBasicInfoData(user, 'profilePic', 'Profile Picture:',
-                  _profilePic, user.profilePic),
-              BuildBasicInfoData(user, 'passportPic', 'Passport Picture:',
-                  _passportPic, user.passportPic),
+                  user:user, fieldName:'gender', fieldTitle: 'Gender', dater: _gender,userModel: user.gender),
+
+              Column(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        return Alert(
+                            context: context,
+                            title: "Residence",
+                            content: Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                        width: 120, child: TextFormField(controller: _residence,decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 15),hintText: 'Enter City'),)),
+                                    Expanded(
+                                      child: CountryListPick(
+                                        pickerBuilder: (context, CountryCode countryCode){
+                                          return Text(countryCode.name);
+                                        },
+                                        theme: CountryTheme(
+                                          isShowFlag: false,
+                                          isShowTitle: true,
+                                          isShowCode: false,
+                                          isDownIcon: true,
+                                          showEnglishName: true,
+                                        ),
+                                        onChanged: (CountryCode code) {
+                                         // print(code.name);
+                                          setState(() {
+                                            _selectedCounty = code.name;
+                                          });
+
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            buttons: [
+                              DialogButton(
+                                onPressed: () async {
+
+                                  userdata.doc(Constants.userId).update(
+                                      {'residence': '${_residence.text.trim()}, ${_selectedCounty}'});
+
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "Update",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              )
+                            ]).show();
+                      },
+                      child: BuildCards('Residence:', user.residence)),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                ],
+              ),
+              // BuildBasicInfoData(user, 'residence', 'City of Residence',
+              //     _residence, user.residence),
+              Column(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        return Alert(
+                            context: context,
+                            title: "Mobile Number",
+                            content: Column(
+                              children: <Widget>[
+                                Row(
+                                 // mainAxisAlignment:
+                                 // MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                      flex:1,
+                                      child: CountryListPick(
+                                        pickerBuilder: (context, CountryCode countryCode){
+                                          return Text(countryCode.dialCode);
+                                        },
+                                        theme: CountryTheme(
+                                          isShowFlag: false,
+                                          isShowTitle: false,
+                                          isShowCode: true,
+                                          isDownIcon: true,
+                                          showEnglishName: true,
+                                        ),
+                                        onChanged: (CountryCode code) {
+                                          // print(code.name);
+                                          setState(() {
+                                            _selectedCountyCode = code.dialCode;
+                                          });
+
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                          width: 120, child: TextFormField(controller: _mobile,decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 15),hintText: 'Enter number without code'),)),
+                                    ),
+
+                                  ],
+                                )
+                              ],
+                            ),
+                            buttons: [
+                              DialogButton(
+                                onPressed: () async {
+
+                                  userdata.doc(Constants.userId).update(
+                                      {'mobile': ' ${_selectedCountyCode} ${_mobile.text.trim()}'});
+
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "Update",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              )
+                            ]).show();
+                      },
+                      child: BuildCards('Mobile number:', user.mobile)),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                ],
+              ),
+              // BuildBasicInfoData(
+              //     user, 'mobile', 'Mobile Number:', _mobile, user.mobile),
+              BuildBasicInfoData(user:user, fieldName:'profilePic',fieldTitle: 'Profile Picture:',
+                  dater:_profilePic,userModel: user.profilePic,onpressed: true),
+              BuildBasicInfoData(user: user, fieldName:'passportPic', fieldTitle:'Passport Picture:',
+                  dater:_passportPic,userModel: user.passportPic,onpressed: true),
             ],
           )
         ],
@@ -320,12 +459,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget BuildBasicInfoData(UserModel user, String fieldName, String fieldTitle,
-      TextEditingController dater, var userModel) {
+  Widget BuildBasicInfoData({UserModel user, String fieldName, String fieldTitle,
+      TextEditingController dater, var userModel, bool onpressed = false}) {
     return Column(
       children: [
         InkWell(
-            onTap: () {
+            onTap: onpressed? (){} :() {
               return Alert(
                   context: context,
                   title: "$fieldTitle",
@@ -360,10 +499,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-
   Widget BuildCards(String title, String description) {
     return Container(
-      padding: EdgeInsets.only(left: 40,right: 10),
+      padding: EdgeInsets.only(left: 40, right: 10),
       height: 55,
       decoration: BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(
@@ -383,9 +521,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w400),
             ),
-            SizedBox(width: 140,
-              child: SingleChildScrollView(scrollDirection: Axis.horizontal,
-
+            SizedBox(
+              width: 140,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
                 child: Text(
                   description,
                   style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w400),
@@ -406,7 +545,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
     'Personal documents',
     'Circle Extra Information',
   ];
-
-
 }
-
